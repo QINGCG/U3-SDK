@@ -213,6 +213,14 @@ namespace SDG.Unturned
 			reader.ReadSteamID(out lobbyID);
 			LogRead("lobbyID", lobbyID);
 
+			if (!lobbyID.IsLobby())
+			{
+				// 2026-09-18: prevents using lobby ID to join non-lobby groups. Ideally, a more thorough fix could
+				// share a secret key between members of the real lobby (with SteamMatchmaking.SetLobbyData) and the
+				// server would only allow players with the same secret to join the in-game group.
+				lobbyID = CSteamID.Nil;
+			}
+
 			uint clientLevelVersion;
 			reader.ReadUInt32(out clientLevelVersion);
 			LogRead("clientLevelVersion", clientLevelVersion);
